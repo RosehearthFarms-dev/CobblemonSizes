@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import static farm.rosehearth.compatemon.util.CompatemonDataKeys.MOD_ID_COMPATEMON;
 
 public class CompatemonPacketTest {
-	public static final ResourceLocation CHANNEL = new ResourceLocation(MOD_ID_COMPATEMON, "example_packet_one");
+	public static final ResourceLocation CHANNEL = new ResourceLocation(MOD_ID_COMPATEMON, "CompatemonPacketTest");
 	
 	public CompatemonPacketTest()
 	{

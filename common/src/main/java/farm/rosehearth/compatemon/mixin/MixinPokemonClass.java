@@ -3,6 +3,7 @@ package farm.rosehearth.compatemon.mixin;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonObject;
+import commonnetwork.api.Network;
 import farm.rosehearth.compatemon.Compatemon;
 import farm.rosehearth.compatemon.events.CompatemonEvents;
 import farm.rosehearth.compatemon.events.cobblemon.PokemonSentOutAndSpawnedEvent;
@@ -11,6 +12,7 @@ import farm.rosehearth.compatemon.events.entity.PokemonJsonSavedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonNbtLoadedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonNbtSavedEvent;
 import farm.rosehearth.compatemon.modules.pehkui.IScalableFormData;
+import farm.rosehearth.compatemon.network.CompatemonPacketTest;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import net.minecraft.nbt.CompoundTag;
@@ -51,7 +53,6 @@ public class MixinPokemonClass {
 		if(cir.getReturnValue() != null){
 			CompatemonEvents.POKEMON_SENT_N_SPAWNED.postThen(new PokemonSentOutAndSpawnedEvent((Pokemon)(Object)this, cir.getReturnValue(), level, position), savedEvent -> null, savedEvent -> {
 				Compatemon.LOGGER.debug("We've posted the new SentNSpawned Event for {}", ((Pokemon)(Object)this).getSpecies().getName());
-				
 				return null;
 			});
 		}

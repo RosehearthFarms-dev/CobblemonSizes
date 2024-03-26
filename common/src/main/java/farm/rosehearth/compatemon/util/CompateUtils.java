@@ -36,7 +36,7 @@ public class CompateUtils {
 	
 	public static ResourceLocation id(String path)
 	{
-		return new ResourceLocation(Compatemon.MODID, path);
+		return new ResourceLocation(MOD_ID_COMPATEMON, path);
 	}
 	
 	public static Pokemon decodePokemon(FriendlyByteBuf buffer){

@@ -1,9 +1,11 @@
 package farm.rosehearth.compatemon.mixin;
 
+import com.cobblemon.mod.common.api.net.NetworkPacket;
+import com.cobblemon.mod.common.api.reactive.SimpleObservable;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+import com.cobblemon.mod.common.net.messages.client.PokemonUpdatePacket;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonObject;
-import commonnetwork.api.Network;
 import farm.rosehearth.compatemon.Compatemon;
 import farm.rosehearth.compatemon.events.CompatemonEvents;
 import farm.rosehearth.compatemon.events.cobblemon.PokemonSentOutAndSpawnedEvent;
@@ -11,9 +13,10 @@ import farm.rosehearth.compatemon.events.entity.PokemonJsonLoadedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonJsonSavedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonNbtLoadedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonNbtSavedEvent;
-import farm.rosehearth.compatemon.modules.pehkui.IScalableFormData;
-import farm.rosehearth.compatemon.network.CompatemonPacketTest;
+import farm.rosehearth.compatemon.modules.compatemon.IPokemonExtensions;
+import farm.rosehearth.compatemon.net.messages.client.PehkuiSizeUpdatePacket;
 import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -37,10 +41,41 @@ import static farm.rosehearth.compatemon.util.CompatemonDataKeys.*;
  * Also adds events to the saveTo and loadFrom NBT/JSON methods.
  */
 @Mixin(Pokemon.class)
-public class MixinPokemonClass {
+abstract class MixinPokemonClass implements IPokemonExtensions {
 
+	@Unique
+	private float compatemon$pokemonScale = 1.0f;
+	@Unique
+	private SimpleObservable _pokemonScale;
+	
 	@Shadow(remap=false)
 	private float scaleModifier;
+	
+	@Shadow(remap=false) public abstract <T extends NetworkPacket<T>> SimpleObservable registerObservable(SimpleObservable<Float> observable, Function1<? super T, ? extends PokemonUpdatePacket<T>> notifyPacket);
+	
+	
+	@Inject(method = "<init>"
+			,at = @At("RETURN")
+			,remap = false)
+	public void compatemon$onInit(CallbackInfo cir){
+		Pokemon p = (Pokemon)(Object)(this);
+		Function0<Pokemon> x = new Function0<>(){
+			@Override
+			public Pokemon invoke(){
+				return p;
+			}
+		};
+		Function1 y = new Function1<Float, PehkuiSizeUpdatePacket>(){
+			
+			@Override
+			public PehkuiSizeUpdatePacket invoke(Float aFloat){
+				return new PehkuiSizeUpdatePacket(x, ((IPokemonExtensions)(Object)p).compatemon$getPokemonScale());
+			}
+			
+		};
+		_pokemonScale = registerObservable(new SimpleObservable<Float>(),y);
+	}
+	
 	
 	// ===============================================================
 	// Injections for Sending Out
@@ -122,4 +157,13 @@ public class MixinPokemonClass {
 		});
 	}
 	
+	@Override
+	public float compatemon$getPokemonScale(){
+		return compatemon$pokemonScale;
+	}
+	
+	@Override
+	public void compatemon$setPokemonScale(float v){
+		compatemon$pokemonScale = v;
+	}
 }

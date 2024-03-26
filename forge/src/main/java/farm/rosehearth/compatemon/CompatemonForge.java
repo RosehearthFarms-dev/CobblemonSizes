@@ -4,6 +4,7 @@ import farm.rosehearth.compatemon.network.client.CompatemonNetworkClient;
 import farm.rosehearth.compatemon.util.RunnableReloader;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -14,7 +15,11 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.server.ServerLifecycleHooks;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 @Mod(Compatemon.MODID)
@@ -87,7 +92,6 @@ public class CompatemonForge implements CompatemonImplementation{
     }
     
     
-    
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event)
     {
@@ -98,9 +102,21 @@ public class CompatemonForge implements CompatemonImplementation{
     }
     
     @SubscribeEvent
-    public void onClientJoined(ClientPlayerNetworkEvent.LoggingIn event)
-    {
+    public void onClientJoined(ClientPlayerNetworkEvent.LoggingIn event){
         Compatemon.networkClient.onJoinWorld();
+    }
+    @Override
+    public @NotNull Environment environment()  {
+        if (FMLEnvironment.dist.isClient())
+            return Environment.CLIENT;
+        else
+            return Environment.SERVER;
+    }
+    
+    @Nullable
+    @Override
+    public MinecraftServer server() {
+        return ServerLifecycleHooks.getCurrentServer();
     }
     
     public static class CompatemonReloadEvent extends Event {}

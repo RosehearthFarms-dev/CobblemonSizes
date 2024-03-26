@@ -1,17 +1,25 @@
 package farm.rosehearth.compatemon.mixin;
 
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonObject;
+import farm.rosehearth.compatemon.Compatemon;
 import farm.rosehearth.compatemon.events.CompatemonEvents;
+import farm.rosehearth.compatemon.events.cobblemon.PokemonSentOutAndSpawnedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonJsonLoadedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonJsonSavedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonNbtLoadedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonNbtSavedEvent;
+import farm.rosehearth.compatemon.modules.pehkui.IScalableFormData;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,8 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static farm.rosehearth.compatemon.util.CompatemonDataKeys.APOTH_RARITY_COLOR;
-import static farm.rosehearth.compatemon.util.CompatemonDataKeys.MOD_ID_COMPATEMON;
+import static farm.rosehearth.compatemon.util.CompatemonDataKeys.*;
 
 /**
  * Mixin to the Pokemon class file in order to actually allow a nickname to be colored? Why was this not a thing? One of the network packet handlers casts to string instead of just using the MutableText
@@ -29,6 +36,26 @@ import static farm.rosehearth.compatemon.util.CompatemonDataKeys.MOD_ID_COMPATEM
  */
 @Mixin(Pokemon.class)
 public class MixinPokemonClass {
+
+	@Shadow(remap=false)
+	private float scaleModifier;
+	
+	// ===============================================================
+	// Injections for Sending Out
+	// ===============================================================
+	
+	@Inject(at= @At(value = "RETURN")
+	,remap=false
+	,method="sendOut")
+	public void compatemon$addSendOutStartedEvent(ServerLevel level, Vec3 position, Function1<? super PokemonEntity, Unit> mutation, CallbackInfoReturnable<PokemonEntity> cir){
+		if(cir.getReturnValue() != null){
+			CompatemonEvents.POKEMON_SENT_N_SPAWNED.postThen(new PokemonSentOutAndSpawnedEvent((Pokemon)(Object)this, cir.getReturnValue(), level, position), savedEvent -> null, savedEvent -> {
+				Compatemon.LOGGER.debug("We've posted the new SentNSpawned Event for {}", ((Pokemon)(Object)this).getSpecies().getName());
+				
+				return null;
+			});
+		}
+	}
 	
 	// ===============================================================
 	// Injections for Nickname things
@@ -44,7 +71,7 @@ public class MixinPokemonClass {
 		,remap=false
 		,cancellable = true)
 	public void compatemon$getDisplayNameWithColor(CallbackInfoReturnable<Component> cir){
-		if(persistentData.getCompound(MOD_ID_COMPATEMON).contains(APOTH_RARITY_COLOR) ){//cir.setReturnValue(nickname.copy().withStyle(Style.EMPTY.withColor(TextColor.parseColor(persistentData.getCompound(MOD_ID_COMPATEMON).getString(APOTH_RARITY_COLOR)))));
+		if(persistentData.getCompound(MOD_ID_COMPATEMON).contains(APOTH_RARITY_COLOR)){
 			var x = cir.getReturnValue().copy().setStyle(Style.EMPTY.withColor(TextColor.parseColor(persistentData.getCompound(MOD_ID_COMPATEMON).getString(APOTH_RARITY_COLOR))));
 			cir.setReturnValue(x);
 		}

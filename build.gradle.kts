@@ -62,7 +62,7 @@ allprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
     version = project.properties["mod_version"] as String
-    group = project.properties["maven_group"] as String
+    group = project.properties["mod_group_id"] as String
     base.archivesName.set(project.properties["mod_id"] as String)
 
     tasks.withType<JavaCompile>().configureEach {
@@ -71,7 +71,6 @@ allprojects {
     }
 
     java.withSourcesJar()
-
 }
 
 tasks{

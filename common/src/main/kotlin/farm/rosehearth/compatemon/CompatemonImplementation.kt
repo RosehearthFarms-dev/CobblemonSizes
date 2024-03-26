@@ -23,6 +23,8 @@ interface CompatemonImplementation {
 	fun registerEvents()
 
 	fun persistentDataKey():String
+	fun environment(): Environment
+	fun server(): MinecraftServer?
 }
 
 enum class ModAPI {

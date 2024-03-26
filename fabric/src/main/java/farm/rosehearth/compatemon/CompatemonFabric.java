@@ -1,16 +1,22 @@
 package farm.rosehearth.compatemon;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import org.jetbrains.annotations.Nullable;
 
 
 public class CompatemonFabric implements ModInitializer,
 										 ClientModInitializer, CompatemonImplementation {
+	private MinecraftServer server;
+	
 	@Override
 	public void onInitialize() {
 		Compatemon.LOGGER.info("Hello Fabric world from Compatemon!");
@@ -33,10 +39,14 @@ public class CompatemonFabric implements ModInitializer,
 	
 	@Override
 	public void postCommonInitialization() {
+	
 	}
 	
 	@Override
 	public void registerEvents() {
+		ServerLifecycleEvents.SERVER_STARTING.register ( server ->{
+			this.server = server;
+		});
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			Compatemon.loadConfigs(false);
 		});
@@ -55,6 +65,23 @@ public class CompatemonFabric implements ModInitializer,
 	@Override
 	public void onInitializeClient(){
 		onInitialize();
-		ClientPlayConnectionEvents.JOIN.register((handler,sender,client) -> Compatemon.networkClient.onJoinWorld());
+		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> Compatemon.networkClient.onJoinWorld());
+	}
+	@NotNull
+	@Override
+	public Environment environment() {
+		
+		if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
+			return Environment.CLIENT;
+		else
+			return Environment.SERVER;
+	}
+	
+	@Nullable
+	@Override
+	public MinecraftServer server() {
+		if(this.environment() == Environment.CLIENT)
+			return Minecraft.getInstance().getSingleplayerServer();
+		return server;
 	}
 }

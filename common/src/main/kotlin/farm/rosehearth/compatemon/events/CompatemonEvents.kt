@@ -3,6 +3,7 @@ package farm.rosehearth.compatemon.events
 import com.cobblemon.mod.common.api.reactive.CancelableObservable
 import com.cobblemon.mod.common.api.reactive.EventObservable
 import farm.rosehearth.compatemon.events.apotheosis.ApothBossSpawnedEvent
+import farm.rosehearth.compatemon.events.cobblemon.PokemonSentOutAndSpawnedEvent
 import farm.rosehearth.compatemon.events.entity.PokemonJsonLoadedEvent
 import farm.rosehearth.compatemon.events.entity.PokemonJsonSavedEvent
 import farm.rosehearth.compatemon.events.entity.PokemonNbtLoadedEvent
@@ -25,4 +26,7 @@ object CompatemonEvents {
 
     @JvmField
     val APOTH_BOSS_SPAWNED = CancelableObservable<ApothBossSpawnedEvent>()
+
+    @JvmField
+    val POKEMON_SENT_N_SPAWNED = CancelableObservable<PokemonSentOutAndSpawnedEvent>()
 }

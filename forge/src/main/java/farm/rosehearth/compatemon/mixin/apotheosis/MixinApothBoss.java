@@ -11,7 +11,6 @@ import farm.rosehearth.compatemon.Compatemon;
 import farm.rosehearth.compatemon.api.entity.PersistantDespawner;
 import farm.rosehearth.compatemon.modules.apotheosis.ApotheosisConfig;
 import farm.rosehearth.compatemon.modules.apotheosis.IApothBossEntity;
-import farm.rosehearth.compatemon.modules.pehkui.PehkuiConfig;
 import farm.rosehearth.compatemon.modules.pehkui.util.CompatemonScaleUtils;
 import farm.rosehearth.compatemon.util.CompateUtils;
 import farm.rosehearth.compatemon.util.CompatemonDataKeys;
@@ -148,17 +147,28 @@ implements IApothBossEntity
 		}
 		
 		if(Compatemon.ShouldLoadMod(MOD_ID_APOTHEOSIS) && Compatemon.ShouldLoadMod(MOD_ID_PEHKUI) && CompateUtils.isApothBoss(entity) && Apotheosis.enableAdventure){
-			var base_scale = PehkuiConfig.size_scale;
+			
 			var addToScale = 0.0f;
-			if(
-					(ApotheosisConfig.BossSizingEntities.equalsIgnoreCase("POKEMON") && entity instanceof PokemonEntity) ||
-			    	(ApotheosisConfig.BossSizingEntities.equalsIgnoreCase("NON-POKEMON") && !(entity instanceof PokemonEntity)) ||
-			    	(ApotheosisConfig.BossSizingEntities.equalsIgnoreCase("ALL"))
-			){
-				base_scale *= ApotheosisConfig.DefaultBossSizeScale;
+			var isBoss = true;
+			switch(ApotheosisConfig.BossSizingEntities.toUpperCase()){
+				case "POKEMON":
+					if(!(entity instanceof PokemonEntity))
+						isBoss = false;
+					break;
+				case "NON-POKEMON":
+					if((entity instanceof PokemonEntity))
+						isBoss = false;
+					break;
+				case "ALL":
+					break;
+				default:
+					isBoss=false;
+					break;
+			}
+			if(isBoss){
 				addToScale = 0.0f;
 			}
-			CompatemonScaleUtils.Companion.setScale(entity, COMPAT_SCALE_SIZE, base_scale, addToScale);
+			CompatemonScaleUtils.Companion.setScale(entity, COMPAT_SCALE_SIZE,  isBoss);
 			
 			
 		}

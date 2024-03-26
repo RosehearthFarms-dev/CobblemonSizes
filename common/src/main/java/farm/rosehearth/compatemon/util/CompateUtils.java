@@ -17,7 +17,6 @@ import static farm.rosehearth.compatemon.util.CompatemonDataKeys.*;
 public class CompateUtils {
 	public static Random Rand = new Random();
 	
-	
 	public static boolean isApothBoss(Mob entity){
 		boolean isBoss = false;
 		if (entity.getType().toString().equals("entity.cobblemon.pokemon")){
@@ -27,7 +26,6 @@ public class CompateUtils {
 		}
 		return isBoss;
 	}
-	
 	public static CompoundTag getPersistentData(Entity entity){
 		return entity.saveWithoutId(new CompoundTag()).getCompound(Compatemon.implementation.persistentDataKey());
 	}
@@ -36,6 +34,5 @@ public class CompateUtils {
 	{
 		return new ResourceLocation(Compatemon.MODID, path);
 	}
-	
 }
 

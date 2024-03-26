@@ -1,11 +1,8 @@
 
 plugins {
-   // id("net.minecraftforge.gradle") version("[6.0,6.2)")
     id("dev.architectury.loom")
     id("architectury-plugin")
     id("com.github.johnrengelman.shadow") version "8.1.1"
-
-    //id("org.spongepowered.mixin") version "0.7.+"
 }
 
 val minecraft_version = project.properties["minecraft_version"] as String
@@ -28,8 +25,8 @@ loom {
     silentMojangMappingsLicense()
 
     forge {
-        mixinConfig ("${project.properties["mod_id"]}-common.mixins.json")
-        mixinConfig ("${project.properties["mod_id"]}.mixins.json")
+        mixinConfig("${project.properties["mod_id"]}-common.mixins.json")
+        mixinConfig("${project.properties["mod_id"]}.mixins.json")
     }
 }
 
@@ -46,6 +43,7 @@ repositories {
     maven("https://maven.shadowsoffire.dev/releases")
     maven("https://maven.theillusivec4.top")
     maven("https://maven.kosmx.dev/")
+
     maven("https://maven.enginehub.org/repo/")
     maven {
         name = "Iron's Maven"
@@ -73,55 +71,56 @@ dependencies {
 
 // Compatemon Dependencies
 
+	// pehkui *****************************************************************************************************
     modApi("com.github.Virtuoel:Pehkui:${project.properties["pehkui_forge"]}-${minecraft_version}-forge")
+	// quark ******************************************************************************************************
     modApi("org.violetmoon.zeta:Zeta:${project.properties["zeta_version"]}")
-
     modApi("org.violetmoon.quark:Quark:${project.properties["quark_version"]}")
     modImplementation("org.violetmoon.quark:Quark:${project.properties["quark_version"]}")
 
-    // curios
+    // CURIOS *****************************************************************************************************
     modImplementation("top.theillusivec4.curios:curios-forge:${project.properties["curios_version"]}+${minecraft_version}")
 
-    // apotheosis
+    // APOTHEOSIS *************************************************************************************************
     modImplementation("dev.shadowsoffire:ApothicAttributes:${minecraft_version}-${project.properties["apothic_attributes_version"]}")
     modImplementation("dev.shadowsoffire:Placebo:${minecraft_version}-${project.properties["placebo_version"]}")
     modImplementation("dev.shadowsoffire:Apotheosis:${minecraft_version}-${project.properties["apotheosis_version"]}")
 
-    //Sophisticated CORE
+    // SOPHISTICATED CORE *****************************************************************************************
 
     modImplementation("curse.maven:sophisticated-storage-${project.properties["sophisticated_storage_version"]}")
     modImplementation("curse.maven:sophisticated-core-${project.properties["sophisticated_core_version"]}")
 
-// IRONS SPELLS N SPELLBOOKS **********************************************************************************
+	// IRONS SPELLS N SPELLBOOKS **********************************************************************************
     modImplementation("io.redspace.ironsspellbooks:irons_spellbooks:${minecraft_version}-${project.properties["irons_spells_version"]}")
 
     // GECKOLIB ***************************************************************************************************
-    //modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${project.properties["geckolib_version"]}")
+    modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${project.properties["geckolib_version"]}")
 
     // CAELUS *****************************************************************************************************
-    //modImplementation("top.theillusivec4.caelus:caelus-forge:${project.properties["caelus_version"]}")
+    modImplementation("top.theillusivec4.caelus:caelus-forge:${project.properties["caelus_version"]}")
 
     // PLAYER ANIMATOR ********************************************************************************************
-    //runtimeOnly("dev.kosmx.player-anim:player-animation-lib-forge:${minecraft_version}-${project.properties["player_animator_version"]}")
+    modImplementation("dev.kosmx.player-anim:player-animation-lib-forge:${project.properties["player_animator_version"]}")
 
     // TETRA ******************************************************************************************************
-    // compileOnly("se.mickelus.mutil:mutil:${minecraft_version}-${project.properties["mutil_version"]}")
-    // compileOnly("curse.maven:tetra-${project.properties["tetra_version"]}")
+    //modImplementation("se.mickelus.mutil:mutil:${minecraft_version}-${project.properties["mutil_version"]}")
+    //modImplementation("curse.maven:tetra-${project.properties["tetra_version"]}")
 
     // BETTER COMBAT **********************************************************************************************
-    //runtimeOnly fg.deobf("curse.maven:better-combat-by-daedelus-${better_combat_version}")
+    //modImplementation("curse.maven:better-combat-by-daedelus-${better_combat_version}")
 
     // PATCHOULI **************************************************************************************************
-    // runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
+    //modImplementation("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
 
     // JSON ******************************************************************************************************
-   // implementation("com.google.code.gson:gson:${project.properties["gson_version"]}")
+    //implementation("com.google.code.gson:gson:${project.properties["gson_version"]}")
 
-//Jade, JEI, and EMI
-   // modImplementation ("curse.maven:jade-forge-324717:${project.properties["jade_version"]}")
-   // modImplementation ("curse.maven:jei-forge-238222:${project.properties["jei_version}"]}")
-   // modImplementation ("dev.emi:emi-forge:${project.properties["emi_version"]}+${minecraft_version}:api")
-   // modImplementation ("dev.emi:emi-forge:${project.properties["emi_version"]}+${minecraft_version}"))
+	//Jade, JEI, and EMI *****************************************************************************************
+    // modImplementation ("curse.maven:jade-forge-324717:${project.properties["jade_version"]}")
+    // modImplementation ("curse.maven:jei-forge-238222:${project.properties["jei_version}"]}")
+    // modImplementation ("dev.emi:emi-forge:${project.properties["emi_version"]}+${minecraft_version}:api")
+    // modImplementation ("dev.emi:emi-forge:${project.properties["emi_version"]}+${minecraft_version}"))
 
 }
 

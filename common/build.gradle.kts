@@ -4,15 +4,13 @@ architectury {
 }
 
 val minecraft_version = project.properties["minecraft_version"] as String
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    // Cobblemon, Pehkui, CommonNetworking
 
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
     modImplementation ("net.fabricmc:fabric-loader:${project.properties["fabric_loader_version"]}")
-    // modApi ("dev.architectury:architectury:${project.properties["architectury_version"]}")
-    // modImplementation("dev.architectury:architectury:${project.properties["architectury_version"]}")
 
     modApi("com.cobblemon:mod:${project.properties["cobblemon_version"]}+$minecraft_version")
     modApi("com.github.Virtuoel:Pehkui:${project.properties["pehkui_version"]}-$minecraft_version-forge")
@@ -50,8 +48,6 @@ tasks {
                 "mod_homepage" to project.properties["mod_homepage"]
             )
         }
-
-
 
     }
 

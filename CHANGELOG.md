@@ -4,14 +4,38 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [1.1.0] - 2024-03-26
 ### Added
 - Added dependency on Common Networking as attempting to pull in proper networking
 
 
+## [1.0.3] - 2024-02-28
+## Added
+- Mixin into DTO Extensions and new Interface for this. Currently only adding persistent data but is setup for future use.
+## Borked
+- Model sizes just altogether are borked. Scaling with pehkui is technically working but the scale it's using isn't accurate when desynced.
+## [1.0.2] - 2024-02-28
+## Fixed
+- Pokemon Sizes are now correctly calculated from config.
+- Model Size matches the calculated size. BORKED again :(
+- Tiny Pokemon no longer have problems with moving around. This may affect the oddness with large pokemon too.
+## Added
+- New Event that posts after a pokemon has been sent out but before the animation finishes. Should mean the entity is available on the server now.
+## Borked
+- Pokemon resize after being sent out and prior to cry. Testing this fix.
+- Server side is causing tons of lag with many clients connected
+- 
 ## [1.0.1] - 2024-2-23
 ### Fixed
 - Dedicated Server Borked due to mixin version problems. this is fixed.
+### Borked
+- Server has much lag on chunk loading. Report is from Pehkui enabled module only.
+### Comments
+- Mod works both client side and server side only? Pehkui module randomizes sizes as client only but doesn't save data. Server only causes lag but sizes work still.
+- Shouldn't be overriding scale function on pokemon renderer. It's scaling the beam effect too.
+- Should only _set_ the scale on pokemon initialization. Can actually change the scale on entity load for spawning and on the on release event for caught?
+
 ## [1.0.0] - 2024-2-22
 ### Added
 - Public Release 1.0.0

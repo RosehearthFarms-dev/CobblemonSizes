@@ -3,10 +3,10 @@ architectury {
     platformSetupLoomIde()
 }
 
+val minecraft_version = project.properties["minecraft_version"] as String
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    // Cobblemon, Pehkui, ClothConfig
-    // Cloth Config no longer needed
+    // Cobblemon, Pehkui, CommonNetworking
 
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
@@ -14,10 +14,13 @@ dependencies {
     // modApi ("dev.architectury:architectury:${project.properties["architectury_version"]}")
     // modImplementation("dev.architectury:architectury:${project.properties["architectury_version"]}")
 
-    modApi("com.cobblemon:mod:${project.properties["cobblemon_version"]}+${project.properties["minecraft_version"]}")
-    modApi("com.github.Virtuoel:Pehkui:${project.properties["pehkui_version"]}-${project.properties["minecraft_version"]}-forge")
-    //modApi("me.shedaniel.cloth:cloth-config:${project.properties["cloth_config_version"]}")
+    modApi("com.cobblemon:mod:${project.properties["cobblemon_version"]}+$minecraft_version")
+    modApi("com.github.Virtuoel:Pehkui:${project.properties["pehkui_version"]}-$minecraft_version-forge")
     //modApi("org.valkyrienskies:valkyrienskies-118-common:${project.properties["vs2_version"]}")
+    
+    //Networking - CommonNetworking
+    modApi ("mysticdrew:common-networking-common:${project.properties["common_networking_version"]}-$minecraft_version")
+    
 }
 
 

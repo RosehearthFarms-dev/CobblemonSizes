@@ -35,6 +35,10 @@ dependencies {
     //Cobblemon
     modApi("com.cobblemon:fabric:${project.properties["cobblemon_version"]}+$minecraft_version")
 
+    
+    //Networking - CommonNetworking
+    modImplementation ("mysticdrew:common-networking-fabric:${project.properties["common_networking_version"]}-$minecraft_version")
+    
    // modCompileOnly ("dev.emi:emi-fabric:${project.properties["emi_version"]}+$minecraft_version:api")
    // modLocalRuntime ("dev.emi:emi-fabric:${project.properties["emi_version"]}+$minecraft_version")
 }

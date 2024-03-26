@@ -1,8 +1,12 @@
 package farm.rosehearth.compatemon;
 
+import farm.rosehearth.compatemon.network.client.CompatemonNetworkClient;
 import farm.rosehearth.compatemon.util.RunnableReloader;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,11 +20,13 @@ import org.jetbrains.annotations.NotNull;
 @Mod(Compatemon.MODID)
 @Mod.EventBusSubscriber()
 public class CompatemonForge implements CompatemonImplementation{
-
+    
     public CompatemonForge(){
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
         MinecraftForge.EVENT_BUS.addListener(this::reloads);
         MinecraftForge.EVENT_BUS.addListener(this::reloadConfigs);
+        MinecraftForge.EVENT_BUS.addListener(this::onPlayerLoggedInEvent);
+        MinecraftForge.EVENT_BUS.addListener(this::onClientJoined);
     }
     
     /**
@@ -80,5 +86,23 @@ public class CompatemonForge implements CompatemonImplementation{
         return "ForgeData";
     }
     
+    
+    
+    @SubscribeEvent
+    public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        if (event.getEntity() instanceof ServerPlayer player)
+        {
+            Compatemon.onPlayerJoinServer(player);
+        }
+    }
+    
+    @SubscribeEvent
+    public void onClientJoined(ClientPlayerNetworkEvent.LoggingIn event)
+    {
+        Compatemon.networkClient.onJoinWorld();
+    }
+    
     public static class CompatemonReloadEvent extends Event {}
+    
 }

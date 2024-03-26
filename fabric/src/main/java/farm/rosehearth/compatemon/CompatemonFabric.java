@@ -1,17 +1,22 @@
 package farm.rosehearth.compatemon;
 
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 
-public class CompatemonFabric implements ModInitializer, CompatemonImplementation {
+public class CompatemonFabric implements ModInitializer,
+										 ClientModInitializer, CompatemonImplementation {
 	@Override
 	public void onInitialize() {
 		Compatemon.LOGGER.info("Hello Fabric world from Compatemon!");
 		Compatemon.preInitialize(this);
 		Compatemon.init();
+		
 	}
 	
 	@NotNull
@@ -38,11 +43,18 @@ public class CompatemonFabric implements ModInitializer, CompatemonImplementatio
 		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, serverResourceManager) -> {
 			Compatemon.loadConfigs(false);
 		});
+		ServerPlayConnectionEvents.JOIN.register((handler,sender,server) -> Compatemon.onPlayerJoinServer(handler.player));
 	}
 	
 	@NotNull
 	@Override
 	public String persistentDataKey() {
 		return "FabricData";
+	}
+	
+	@Override
+	public void onInitializeClient(){
+		onInitialize();
+		ClientPlayConnectionEvents.JOIN.register((handler,sender,client) -> Compatemon.networkClient.onJoinWorld());
 	}
 }

@@ -5,12 +5,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import commonnetwork.api.Dispatcher;
+import commonnetwork.api.Network;
 import farm.rosehearth.compatemon.config.Configuration;
 import farm.rosehearth.compatemon.modules.apotheosis.ApotheosisConfig;
 import farm.rosehearth.compatemon.modules.compatemon.CompatemonConfig;
 import farm.rosehearth.compatemon.modules.pehkui.PehkuiConfig;
 import farm.rosehearth.compatemon.modules.quark.QuarkConfig;
 import farm.rosehearth.compatemon.modules.sophisticatedcore.SophisticatedConfig;
+import farm.rosehearth.compatemon.network.CompatemonNetwork;
+import farm.rosehearth.compatemon.network.CompatemonPacketTest;
+import farm.rosehearth.compatemon.network.client.CompatemonNetworkClient;
+import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +30,8 @@ public class Compatemon {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 	
 	public static CompatemonImplementation implementation;
+	public static CompatemonNetwork network;
+	public static CompatemonNetworkClient networkClient;
 	public static File configDir;
 	public static Configuration config;
 	//public static final Map<String,Configuration> configs = new HashMap<>();
@@ -71,6 +79,7 @@ public class Compatemon {
 		CompatemonKotlin.INSTANCE.initialize();
 		Compatemon.implementation.postCommonInitialization();
 		Compatemon.implementation.registerEvents();
+		initNetwork();
 	}
 	
 	/**
@@ -122,6 +131,20 @@ public class Compatemon {
 	}
 	
 	public static boolean ShouldLoadMod(String mod_id){     return modsToEnable.get(mod_id);    }
-
+	
+	
+	
+	
+	/**
+	 * Initialize the Compatemon Network - uses CommonNetworking Mod
+	 */
+	public static void initNetwork(){
+		network = new CompatemonNetwork().init();
+	}
+	
+	public static void onPlayerJoinServer(ServerPlayer player){
+		Dispatcher.sendToClient(new CompatemonPacketTest(), player);
+		Network.getNetworkHandler().sendToClient(new CompatemonPacketTest(), player);
+	}
 	
 }

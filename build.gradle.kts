@@ -30,6 +30,7 @@ subprojects {
         maven( "https://repo.spongepowered.org/repository/maven-public/" )
         maven("https://maven.shedaniel.me/")
         maven("https://maven.blamejared.com")
+        maven("https://jm.gserv.me/repository/maven-public/")
         exclusiveContent {
             forRepository {
                 maven("https://api.modrinth.com/maven")

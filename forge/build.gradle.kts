@@ -65,7 +65,11 @@ dependencies {
 
     modImplementation("com.cobblemon:forge:${project.properties["cobblemon_version"]}+$minecraft_version")
     runtimeOnly("maven.modrinth:ordsPcFz:${project.properties["kotlin_forge_version"]}") //kotlinforforge
-
+    
+    
+    //Networking - CommonNetworking
+    modImplementation ("mysticdrew:common-networking-forge:${project.properties["common_networking_version"]}-$minecraft_version")
+    modApi ("mysticdrew:common-networking-forge:${project.properties["common_networking_version"]}-$minecraft_version")
 
 // Compatemon Dependencies
 

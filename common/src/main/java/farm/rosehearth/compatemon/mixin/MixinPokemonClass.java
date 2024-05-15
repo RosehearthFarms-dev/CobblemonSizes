@@ -1,6 +1,6 @@
 package farm.rosehearth.compatemon.mixin;
 
-import com.cobblemon.mod.common.api.net.NetworkPacket;
+import com.cobblemon.mod.common.api.reactive.SettableObservable;
 import com.cobblemon.mod.common.api.reactive.SimpleObservable;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.net.messages.client.PokemonUpdatePacket;
@@ -25,8 +25,10 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -46,34 +48,34 @@ abstract class MixinPokemonClass implements IPokemonExtensions {
 	@Unique
 	private float compatemon$pokemonScale = 1.0f;
 	@Unique
-	private SimpleObservable _pokemonScale;
+	private SettableObservable<CompoundTag> _persistentData;
 	
 	@Shadow(remap=false)
 	private float scaleModifier;
 	
-	@Shadow(remap=false) public abstract <T extends NetworkPacket<T>> SimpleObservable registerObservable(SimpleObservable<Float> observable, Function1<? super T, ? extends PokemonUpdatePacket<T>> notifyPacket);
+	@Shadow(remap=false) public abstract <T > SimpleObservable registerObservable(SimpleObservable<T> observable, Function1<? super T, ? extends PokemonUpdatePacket> notifyPacket);
 	
 	
 	@Inject(method = "<init>"
 			,at = @At("RETURN")
 			,remap = false)
 	public void compatemon$onInit(CallbackInfo cir){
-		Pokemon p = (Pokemon)(Object)(this);
-		Function0<Pokemon> x = new Function0<>(){
-			@Override
-			public Pokemon invoke(){
-				return p;
-			}
-		};
-		Function1 y = new Function1<Float, PehkuiSizeUpdatePacket>(){
-			
-			@Override
-			public PehkuiSizeUpdatePacket invoke(Float aFloat){
-				return new PehkuiSizeUpdatePacket(x, ((IPokemonExtensions)(Object)p).compatemon$getPokemonScale());
-			}
-			
-		};
-		_pokemonScale = registerObservable(new SimpleObservable<Float>(),y);
+		_persistentData = new SettableObservable<CompoundTag>(persistentData);
+//		Pokemon p = (Pokemon)(Object)(this);
+//		Function0<Pokemon> x = new Function0<>(){
+//			@Override
+//			public Pokemon invoke(){
+//				return p;
+//			}
+//		};
+//		Function1<CompoundTag, PehkuiSizeUpdatePacket> y = new Function1<>(){
+//			@Override
+//			public PehkuiSizeUpdatePacket invoke(CompoundTag aFloat){
+//				return new PehkuiSizeUpdatePacket(x, ((IPokemonExtensions)(Object)p).compatemon$getPersistentData());
+//			}
+//		};
+//
+//		_persistentData = registerObservable(new SimpleObservable<CompoundTag>(),y);
 	}
 	
 	
@@ -101,6 +103,8 @@ abstract class MixinPokemonClass implements IPokemonExtensions {
 	private @Nullable MutableComponent nickname;
 	@Shadow(remap=false)
 	private CompoundTag persistentData;
+	
+	
 	
 	@Inject(at=@At("RETURN")
 		,method="getDisplayName"
@@ -158,12 +162,22 @@ abstract class MixinPokemonClass implements IPokemonExtensions {
 	}
 	
 	@Override
-	public float compatemon$getPokemonScale(){
-		return compatemon$pokemonScale;
+	public CompoundTag compatemon$getPersistentData(){
+		return _persistentData.get();
 	}
 	
 	@Override
-	public void compatemon$setPokemonScale(float v){
-		compatemon$pokemonScale = v;
+	public void compatemon$setPersistentData(CompoundTag v){
+		//persistentData.merge(v);
+		_persistentData.set(v);
+	}
+	
+	/**
+	 * @author = Gormottian
+	 * @reason = Making PersistentData Sync between client and server
+	 */
+	@Overwrite(remap = false)
+	public final @NotNull CompoundTag getPersistentData(){
+		return _persistentData.get();
 	}
 }

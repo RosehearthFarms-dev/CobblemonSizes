@@ -3,15 +3,12 @@
 	"package": "farm.rosehearth.compatemon.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"MixinFormData",
 		"MixinPokemonClass",
 		"MixinPokemonDTO",
 		"MixinPokemonEntity",
-		"MixinPokemonNicknamedEvent",
-		"client.MixinPokemonClientDelegate"
+		"MixinPokemonNicknamedEvent"
 	],
 	"client": [
-		"client.MixinNicknameEntryWidget",
-		"client.MixinPokemonRenderer"
+		"client.MixinNicknameEntryWidget"
 	]
 }

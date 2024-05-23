@@ -9,7 +9,7 @@ import farm.rosehearth.compatemon.config.Configuration;
 import farm.rosehearth.compatemon.modules.apotheosis.ApotheosisConfig;
 import farm.rosehearth.compatemon.modules.compatemon.CompatemonConfig;
 import farm.rosehearth.compatemon.modules.pehkui.PehkuiConfig;
-import farm.rosehearth.compatemon.modules.quark.QuarkConfig;
+//import farm.rosehearth.compatemon.modules.quark.QuarkConfig;
 import farm.rosehearth.compatemon.modules.sophisticatedcore.SophisticatedConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

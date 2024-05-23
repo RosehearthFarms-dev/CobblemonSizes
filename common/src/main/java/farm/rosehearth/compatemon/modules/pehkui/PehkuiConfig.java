@@ -1,11 +1,8 @@
 package farm.rosehearth.compatemon.modules.pehkui;
 
-import farm.rosehearth.compatemon.Compatemon;
 import farm.rosehearth.compatemon.config.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.File;
 
 /**
  *

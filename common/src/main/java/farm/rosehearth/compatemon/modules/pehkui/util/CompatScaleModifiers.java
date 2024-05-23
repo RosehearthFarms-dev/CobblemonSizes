@@ -2,9 +2,7 @@ package farm.rosehearth.compatemon.modules.pehkui.util;
 
 import farm.rosehearth.compatemon.Compatemon;
 import net.minecraft.resources.ResourceLocation;
-import org.spongepowered.asm.mixin.Mixin;
 import virtuoel.pehkui.api.*;
-import net.minecraft.util.*;
 
 /**
  * This is where Compatemon Scales will be stored

@@ -4,21 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [1.0.3] - 2024-02-28
-## Added
-- Mixin into DTO Extensions and new Interface for this. Currently only adding persistent data but is setup for future use.
-## Borked
-- Model sizes just altogether are borked. Scaling with pehkui is technically working but the scale it's using isn't accurate when desynced.
+## [1.1.0] - 2024-05-23
+### Changed
+- Migrated to Cobblemon 1.5.0
+- Updated sizing to just use the sizeModifier field of the pokemon class and change the other attributes as needed.
+- Currently pehkui is used to update the health, attack, defense, projectiles, and explosions of a pokemon based on the randomization. The size is controlled by the sizeModifier
+- Should allow seamless upgrade from versions using persistent data, but may recalculate sizes
+- Cleaned up code a bit.
+### Borked
+- HP isn't showing as calculated properly on clients using plugins like JADE 
+
 ## [1.0.2] - 2024-02-28
-## Fixed
+### Fixed
 - Pokemon Sizes are now correctly calculated from config.
 - Model Size matches the calculated size. BORKED again :(
 - Tiny Pokemon no longer have problems with moving around. This may affect the oddness with large pokemon too.
-## Added
+### Added
 - New Event that posts after a pokemon has been sent out but before the animation finishes. Should mean the entity is available on the server now.
-## Borked
+### Borked
 - Pokemon resize after being sent out and prior to cry. Testing this fix.
 - Server side is causing tons of lag with many clients connected
+
 ## [1.0.1] - 2024-2-23
 ### Fixed
 - Dedicated Server Borked due to mixin version problems. this is fixed.

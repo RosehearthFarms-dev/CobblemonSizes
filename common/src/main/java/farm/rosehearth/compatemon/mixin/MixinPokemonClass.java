@@ -1,16 +1,15 @@
 package farm.rosehearth.compatemon.mixin;
 
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+import com.cobblemon.mod.common.entity.pokemon.effects.IllusionEffect;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonObject;
-import farm.rosehearth.compatemon.Compatemon;
 import farm.rosehearth.compatemon.events.CompatemonEvents;
 import farm.rosehearth.compatemon.events.cobblemon.PokemonSentOutAndSpawnedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonJsonLoadedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonJsonSavedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonNbtLoadedEvent;
 import farm.rosehearth.compatemon.events.entity.PokemonNbtSavedEvent;
-import farm.rosehearth.compatemon.modules.pehkui.IScalableFormData;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import net.minecraft.nbt.CompoundTag;
@@ -37,20 +36,19 @@ import static farm.rosehearth.compatemon.util.CompatemonDataKeys.*;
 @Mixin(Pokemon.class)
 public class MixinPokemonClass {
 
-	@Shadow(remap=false)
-	private float scaleModifier;
 	
 	// ===============================================================
 	// Injections for Sending Out
+	// sendOut received a new param in cobblemon 1.5.0 that broke previous version
 	// ===============================================================
 	
 	@Inject(at= @At(value = "RETURN")
 	,remap=false
 	,method="sendOut")
-	public void compatemon$addSendOutStartedEvent(ServerLevel level, Vec3 position, Function1<? super PokemonEntity, Unit> mutation, CallbackInfoReturnable<PokemonEntity> cir){
+	public void compatemon$addSendOutStartedEvent(ServerLevel level, Vec3 position, IllusionEffect illusion, Function1<? super PokemonEntity, Unit> mutation, CallbackInfoReturnable<PokemonEntity> cir){
 		if(cir.getReturnValue() != null){
 			CompatemonEvents.POKEMON_SENT_N_SPAWNED.postThen(new PokemonSentOutAndSpawnedEvent((Pokemon)(Object)this, cir.getReturnValue(), level, position), savedEvent -> null, savedEvent -> {
-				Compatemon.LOGGER.debug("We've posted the new SentNSpawned Event for {}", ((Pokemon)(Object)this).getSpecies().getName());
+//				Compatemon.LOGGER.debug("We've posted the new SentNSpawned Event for {}", ((Pokemon)(Object)this).getSpecies().getName());
 				
 				return null;
 			});

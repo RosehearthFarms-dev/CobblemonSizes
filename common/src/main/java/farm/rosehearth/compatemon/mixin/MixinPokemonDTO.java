@@ -2,11 +2,9 @@ package farm.rosehearth.compatemon.mixin;
 
 import com.cobblemon.mod.common.net.messages.PokemonDTO;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import farm.rosehearth.compatemon.Compatemon;
 import farm.rosehearth.compatemon.modules.compatemon.IPokemonDTOExtensions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -70,12 +68,12 @@ implements IPokemonDTOExtensions {
 	,remap=false
 	,method="create")
 	public void compatemon$createPokemon$tail(CallbackInfoReturnable<Pokemon> cir){
-		Compatemon.LOGGER.debug("====================================================================");
-		Compatemon.LOGGER.debug("We're creating the pokemon here! Here's the entity's NBT Data: ");
+//		Compatemon.LOGGER.debug("====================================================================");
+//		Compatemon.LOGGER.debug("We're creating the pokemon here! Here's the entity's NBT Data: ");
 		//Compatemon.LOGGER.info(compatemon$persistentData.toString());
 		cir.getReturnValue().getPersistentData().merge(compatemon$persistentData);
 		CompoundTag x = cir.getReturnValue().saveToNBT(new CompoundTag());
-		Compatemon.LOGGER.debug(x.toString());
-		Compatemon.LOGGER.debug("====================================================================");
+//		Compatemon.LOGGER.debug(x.toString());
+//		Compatemon.LOGGER.debug("====================================================================");
 	}
 }

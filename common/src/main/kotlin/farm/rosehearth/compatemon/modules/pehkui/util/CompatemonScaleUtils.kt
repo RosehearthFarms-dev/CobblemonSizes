@@ -1,15 +1,11 @@
 package farm.rosehearth.compatemon.modules.pehkui.util
 
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
-import farm.rosehearth.compatemon.Compatemon
 import farm.rosehearth.compatemon.modules.apotheosis.ApotheosisConfig
-import farm.rosehearth.compatemon.modules.pehkui.IScalableFormData
-import farm.rosehearth.compatemon.modules.pehkui.IScalablePokemonEntity
 import farm.rosehearth.compatemon.modules.pehkui.PehkuiConfig
 import farm.rosehearth.compatemon.util.CompateUtils
 import farm.rosehearth.compatemon.util.CompatemonDataKeys
 import farm.rosehearth.compatemon.util.CompatemonDataKeys.COMPAT_SCALE_SIZE
-import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.Mob
 import virtuoel.pehkui.api.ScaleTypes
@@ -48,8 +44,10 @@ open class CompatemonScaleUtils {
             // Gets from a pokemon's persistentData or a different entity's scale data
             // May need to change how it gets this data? May be where the issue with environ desync comes from?
             if(entity.type.toString() == "entity.cobblemon.pokemon"){
-                if((entity as PokemonEntity).pokemon.persistentData.getCompound(CompatemonDataKeys.MOD_ID_COMPATEMON).contains(scaleName)) {
-                    scaleVal = entity.pokemon.persistentData.getCompound(CompatemonDataKeys.MOD_ID_COMPATEMON).getFloat(scaleName)
+                if((entity as PokemonEntity).pokemon.scaleModifier != 1.0f) {
+                    scaleVal = (entity as PokemonEntity).pokemon.scaleModifier
+                }else if((entity as PokemonEntity).pokemon.persistentData.getCompound(CompatemonDataKeys.MOD_ID_COMPATEMON).contains(scaleName)) {
+                        scaleVal = entity.pokemon.persistentData.getCompound(CompatemonDataKeys.MOD_ID_COMPATEMON).getFloat(scaleName)
                 }
             }
             else{
@@ -66,11 +64,8 @@ open class CompatemonScaleUtils {
 
             // Add the calculated scale to the pokemon's PersistentData
             if(entity.type.toString() == "entity.cobblemon.pokemon"){
-                val compatemonData = CompoundTag()
-                compatemonData.put(CompatemonDataKeys.MOD_ID_COMPATEMON, CompoundTag())
-                compatemonData.getCompound(CompatemonDataKeys.MOD_ID_COMPATEMON).putFloat(scaleName, scaleVal)
-                (entity as PokemonEntity).pokemon.persistentData.merge(compatemonData)
-                Compatemon.LOGGER.debug("Size Scale of {} is being set: {}", entity.pokemon.species.name, scaleVal);
+                (entity as PokemonEntity).pokemon.scaleModifier = scaleVal
+               // Compatemon.LOGGER.debug("Size Scale of {} is being set: {}", entity.pokemon.species.name, scaleVal);
             }
             return scaleVal
         }
@@ -100,13 +95,13 @@ open class CompatemonScaleUtils {
         private fun applyScale(entity:Entity, scale:Float):Float{
 
             ScaleTypes.ATTACK.getScaleData(entity).scale = scale
-            ScaleTypes.ATTACK_SPEED.getScaleData(entity).scale = scale
             ScaleTypes.DEFENSE.getScaleData(entity).scale = scale
             ScaleTypes.HEALTH.getScaleData(entity).scale = scale
             ScaleTypes.PROJECTILES.getScaleData(entity).scale = scale
-
-            ScaleTypes.MODEL_HEIGHT.getScaleData(entity).scale = scale
-            ScaleTypes.MODEL_WIDTH.getScaleData(entity).scale = scale
+            ScaleTypes.EXPLOSIONS.getScaleData(entity).scale = scale
+            //ScaleTypes.ATTACK_SPEED.getScaleData(entity).scale = scale
+            //ScaleTypes.MODEL_HEIGHT.getScaleData(entity).scale = scale
+            //ScaleTypes.MODEL_WIDTH.getScaleData(entity).scale = scale
 
 
             return scale

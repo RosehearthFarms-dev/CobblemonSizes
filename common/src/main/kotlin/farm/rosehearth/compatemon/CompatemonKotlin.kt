@@ -4,11 +4,9 @@ package farm.rosehearth.compatemon
 import com.cobblemon.mod.common.api.events.CobblemonEvents.POKEMON_ENTITY_LOAD
 import com.cobblemon.mod.common.api.events.CobblemonEvents.POKEMON_ENTITY_SAVE
 import com.cobblemon.mod.common.api.events.CobblemonEvents.POKEMON_ENTITY_SPAWN
-import com.cobblemon.mod.common.api.events.CobblemonEvents.POKEMON_RELEASED_EVENT_PRE
 import com.cobblemon.mod.common.api.events.CobblemonEvents.POKEMON_SENT_POST
 import com.cobblemon.mod.common.api.events.CobblemonEvents.POKEMON_SENT_PRE
 import farm.rosehearth.compatemon.events.CompatemonEvents.POKEMON_SENT_N_SPAWNED
-import farm.rosehearth.compatemon.modules.pehkui.IScalableFormData
 import farm.rosehearth.compatemon.modules.pehkui.util.CompatemonScaleUtils.Companion.getScale
 import farm.rosehearth.compatemon.modules.pehkui.util.CompatemonScaleUtils.Companion.setScale
 import farm.rosehearth.compatemon.util.CompatemonDataKeys.APOTH_BOSS

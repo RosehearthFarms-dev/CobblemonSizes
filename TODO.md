@@ -41,6 +41,9 @@
 - Spawners
   - Rogue Spawners - New Structure for pokemon specific rogue bosses
 
+### Zenith 
+- Make compatable. Can probably reuse most of apotheosis' code. 
+
 ### Curios
 > https://github.com/TheIllusiveC4/Curios
 - Give Hold Items Curios Support and effects

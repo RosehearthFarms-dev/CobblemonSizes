@@ -36,18 +36,10 @@ abstract class MixinPokemonEntity extends Entity
             ,remap = false)
     public void compatemon$onInit(Level world, Pokemon pokemon, EntityType entityType, CallbackInfo cir){
         if(Compatemon.ShouldLoadMod(MOD_ID_PEHKUI) && !pokemon.isClient$common()){
-            CompatemonScaleUtils.Companion.setScale(((PokemonEntity) ((Object) this)), COMPAT_SCALE_SIZE);
+           CompatemonScaleUtils.Companion.setScale(((PokemonEntity) ((Object) this)), COMPAT_SCALE_SIZE);
         }
     }
-//
-//    @Inject(method="<clinit>"
-//    ,at=@At("RETURN")
-//    ,remap=false)
-//    private static void compatemon$onclinitReturn(CallbackInfo ci){
-//        Compatemon.LOGGER.debug("In clinit PokemonEntity");
-//        //PERSISTENT_DATA = SynchedEntityData.defineId(PokemonEntity.class, EntityDataSerializers.COMPOUND_TAG);
-//    }
-    
+
 
     @Inject(at = @At("TAIL")
             ,method="setCustomName"

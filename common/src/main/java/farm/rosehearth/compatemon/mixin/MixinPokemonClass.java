@@ -37,23 +37,21 @@ import static farm.rosehearth.compatemon.util.CompatemonDataKeys.*;
 public class MixinPokemonClass {
 
 	
-	// ===============================================================
-	// Injections for Sending Out
-	// sendOut received a new param in cobblemon 1.5.0 that broke previous version
-	// ===============================================================
-	
-	@Inject(at= @At(value = "RETURN")
-	,remap=false
-	,method="sendOut")
-	public void compatemon$addSendOutStartedEvent(ServerLevel level, Vec3 position, IllusionEffect illusion, Function1<? super PokemonEntity, Unit> mutation, CallbackInfoReturnable<PokemonEntity> cir){
-		if(cir.getReturnValue() != null){
-			CompatemonEvents.POKEMON_SENT_N_SPAWNED.postThen(new PokemonSentOutAndSpawnedEvent((Pokemon)(Object)this, cir.getReturnValue(), level, position), savedEvent -> null, savedEvent -> {
-//				Compatemon.LOGGER.debug("We've posted the new SentNSpawned Event for {}", ((Pokemon)(Object)this).getSpecies().getName());
-				
-				return null;
-			});
-		}
-	}
+//	// ===============================================================
+//	// Injections for Sending Out
+//	// sendOut received a new param in cobblemon 1.5.0 that broke previous version
+//	// ===============================================================
+//
+//	@Inject(at= @At(value = "RETURN")
+//	,remap=false
+//	,method="sendOut")
+//	public void compatemon$addSendOutStartedEvent(ServerLevel level, Vec3 position, IllusionEffect illusion, Function1<? super PokemonEntity, Unit> mutation, CallbackInfoReturnable<PokemonEntity> cir){
+//		if(cir.getReturnValue() != null){
+//			CompatemonEvents.POKEMON_SENT_N_SPAWNED.postThen(new PokemonSentOutAndSpawnedEvent((Pokemon)(Object)this, cir.getReturnValue(), level, position), savedEvent -> null, savedEvent -> {
+//				return null;
+//			});
+//		}
+//	}
 	
 	// ===============================================================
 	// Injections for Nickname things

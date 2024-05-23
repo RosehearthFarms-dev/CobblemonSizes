@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Currently pehkui is used to update the health, attack, defense, projectiles, and explosions of a pokemon based on the randomization. The size is controlled by the sizeModifier
 - Should allow seamless upgrade from versions using persistent data, but may recalculate sizes
 - Cleaned up code a bit.
+- Removed excess & redundant calls. Should increase performance 
 ### Borked
 - HP isn't showing as calculated properly on clients using plugins like JADE 
 
